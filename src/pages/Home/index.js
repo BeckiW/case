@@ -1,9 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
-import {WithOrganizations} from '../../containers/WithOrganization';
 import {H1} from '../../components/H1';
+import {WithLogicTestResult} from '../../containers/WithLogicTestResult';
+import OrganizationHeader from '../../components/OrganizationHeader';
+import LogicTestResults from '../../components/LogicTestResults';
+import LogicTestResultsSummary from '../../components/LogicTestResultsSummary';
 
 import {CONFIG} from '../../config';
+import './style.css';
 
 
 class Home extends React.Component {
@@ -19,11 +23,10 @@ class Home extends React.Component {
     };
 
     render() {
-
         return (
             <Wrapper>
                 <H1>Home</H1>
-                <WithOrganizations onError={this.renderError} organizationId={CONFIG.ORGANIZATION_ID}>
+                <WithLogicTestResult onError={this.renderError} organizationId={CONFIG.ORGANIZATION_ID}>
                     {({loading, data}) => {
                         if (loading) {
                             return <p>Loading</p>;
@@ -31,12 +34,13 @@ class Home extends React.Component {
 
                         return (
                             <div>
-                                <p>ID: {data.organization.id}</p>
-                                <p>Name: {data.organization.name}</p>
+                                <OrganizationHeader name={data.organization.name} id={data.organization.id} />
+                                <LogicTestResultsSummary data={data} />
+                                <LogicTestResults data={data} />
                             </div>
-                        );
+                        )
                     }}
-                </WithOrganizations>
+                </WithLogicTestResult>
             </Wrapper>
         );
     }
